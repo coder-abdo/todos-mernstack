@@ -14,3 +14,11 @@
 - Helmet
 - Cors
 - Morgan
+
+## Front End Techs
+
+- React JS
+- React Router Dom JS
+- Bootstrap4
+- Typescript
+- React Icons
