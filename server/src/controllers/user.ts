@@ -24,7 +24,7 @@ export const signupControllers: RequestHandler = async (req, res, next) => {
 
     await user.save();
     const token = sign({ id: user.id }, secret, { expiresIn: expiredDate });
-    return res.status(201).json({ user, token });
+    return res.status(201).json({ token });
   } catch (err) {
     next(err);
   }
@@ -51,14 +51,9 @@ export const signInControllers: RequestHandler = async (req, res, next) => {
     const secret = process.env.JWT_SECRET_TOKEN as Secret;
     const expiredDate = process.env.JWT_EXPIRED as any;
 
-    const token = sign({ id: user._id }, secret, { expiresIn: expiredDate });
+    const token = sign({ id: user.id }, secret, { expiresIn: expiredDate });
     return res.status(201).json({
       token,
-      user: {
-        email: user.email,
-        username: user.username,
-        id: user.id,
-      },
     });
   } catch (err) {
     next(err);

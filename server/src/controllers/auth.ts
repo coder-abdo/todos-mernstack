@@ -28,3 +28,12 @@ export const auth: RequestHandler = async (
     next(err);
   }
 };
+
+export const getAuth: RequestHandler = async (
+  req: IReq | any,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = await User.findById(req.user);
+  res.json(user);
+};
