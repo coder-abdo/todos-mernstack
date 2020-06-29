@@ -6,12 +6,15 @@ import { Home } from "./pages/Home";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { UserContext } from "./context/userContext";
+import { auth } from "./actions/userActions";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { Todos } from "./pages/Todos";
+import ErrorPage from "./pages/Error";
 import "./App.css";
-
 function App() {
-  const { setUser } = useContext(UserContext);
+  let token = localStorage.getItem("token");
+  const { dispatch } = useContext(UserContext);
   const getUser = async () => {
-    let token = localStorage.getItem("token");
     if (token === null) {
       token = "";
       localStorage.setItem("token", "");
@@ -21,14 +24,13 @@ function App() {
         "x-auth-token": token,
       },
     });
-    console.log(tokenRes.data);
     if (tokenRes.data) {
       const userData = await axios.get("/auth", {
         headers: {
           "x-auth-token": token,
         },
       });
-      setUser({ token, user: userData.data, isAuth: true });
+      dispatch(auth({ token, user: userData.data.user }));
     }
   };
   useEffect(() => {
@@ -38,13 +40,13 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="container">
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/signup" exact component={Register} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/login" exact component={Login} />
+        <Route path="/signup" exact component={Register} />
+        <PrivateRoute component={Todos} path="/todos" exact />
+        <Route component={ErrorPage} />
+      </Switch>
     </Router>
   );
 }

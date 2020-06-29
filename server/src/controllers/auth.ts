@@ -19,7 +19,7 @@ export const auth: RequestHandler = async (
     if (!verfiedToken) {
       return res.json(false);
     }
-    const user = await User.findById(verfiedToken.id);
+    const user = await User.findById(verfiedToken.id).select("-password");
     if (!user) {
       return res.json(false);
     }
@@ -34,6 +34,6 @@ export const getAuth: RequestHandler = async (
   res: Response,
   next: NextFunction
 ) => {
-  const user = await User.findById(req.user);
+  const user = await User.findById(req.user).select("-password");
   res.json(user);
 };

@@ -1,6 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { UserContext } from "../context/userContext";
+import { IUserData } from "../types";
 export const Home = () => {
+  const {
+    state: { isAuth },
+  }: { state: IUserData } = useContext(UserContext);
+  if (isAuth) {
+    return <Redirect to="/todos" />;
+  }
   return (
     <>
       <div className="jumbotron mt-5">

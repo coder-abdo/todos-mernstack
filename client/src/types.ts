@@ -11,10 +11,15 @@ export interface IUserData {
   token: string | null;
   user: IUser | null;
   isAuth: boolean;
+  loading?: boolean;
 }
 export interface IAction<T> {
   type: string;
   payload: T;
+}
+export interface IAlert {
+  msg: string;
+  removeAlert: () => void;
 }
 export enum ActionsTypes {
   REGISTER_SUCCESS = "REGISTER_SUCESS",

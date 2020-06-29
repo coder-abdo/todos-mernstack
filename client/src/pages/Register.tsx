@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { Link, useHistory } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { UserContext } from "../context/userContext";
-import { sucessRegister, faildRegister } from "../actions/userActions";
+import { sucessRegister, faildRegister, auth } from "../actions/userActions";
 import { IUser } from "../types";
 export const Register = () => {
-  const history = useHistory();
-  const { dispatch } = useContext(UserContext);
+  const { dispatch, state } = useContext(UserContext);
+  const { isAuth } = state;
   const [userData, setUserData] = useState<IUser>({
     username: "",
     email: "",
@@ -27,13 +27,23 @@ export const Register = () => {
       } else {
         const { data } = await axios.post("/signup", userData);
         dispatch(sucessRegister(data.token));
-        history.push("/todos");
+        if (data.token) {
+          const user = await axios.get("/auth", {
+            headers: {
+              "x-auth-token": data.token,
+            },
+          });
+          dispatch(auth({ token: data.token, user: user.data }));
+        }
       }
     } catch (error) {
       dispatch(faildRegister);
       setErr(error);
     }
   };
+  if (isAuth) {
+    return <Redirect to="/todos" />;
+  }
   return (
     <form onSubmit={handleSubmit}>
       <h2 className="display-1">Register</h2>

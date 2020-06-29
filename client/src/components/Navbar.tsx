@@ -1,10 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../context/userContext";
+import { logout } from "../actions/userActions";
+import { FaBars } from "react-icons/fa";
 export const Navbar = () => {
-  const { state } = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
   let { isAuth } = state;
-  console.log(isAuth);
+  const [isToggle, setIsToggle] = useState<boolean>(false);
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+  const toggleMenu = () => {
+    setIsToggle(!isToggle);
+  };
   const guestUsers = (
     <>
       <li className="nav-item">
@@ -24,21 +32,31 @@ export const Navbar = () => {
       <li className="nav-item">
         <NavLink to="/todos">Todos</NavLink>
       </li>
-      <li className="nav-item">
+      <li className="nav-item mx-md-3 myc-sm-3">
         <NavLink to="/todos/create">Create</NavLink>
       </li>
       <li className="nav-item">
-        <button className="btn btn-secondary my-2 my-sm-0">logout</button>
+        <button
+          className="btn btn-secondary my-2 my-sm-0"
+          onClick={handleLogout}
+        >
+          logout
+        </button>
       </li>
     </>
   );
   return (
     <header>
-      <nav className="navbar navbar-expand-lg bg-light">
+      <nav className="navbar navbar-expand-lg bg-light pos-rv">
         <NavLink className="navbar-brand" to="/">
           My Todos
         </NavLink>
-        <ul className="navbar-nav ml-auto">{isAuth ? authUser : guestUsers}</ul>
+        <FaBars className="menu-btn" onClick={toggleMenu} />
+        <ul
+          className={`navbar-nav ml-auto flexy drop-down ${isToggle && "show"}`}
+        >
+          {isAuth ? authUser : guestUsers}
+        </ul>
       </nav>
     </header>
   );
