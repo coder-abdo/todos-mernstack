@@ -33,7 +33,7 @@ export const Register = () => {
               "x-auth-token": data.token,
             },
           });
-          dispatch(auth({ token: data.token, user: user.data }));
+          return dispatch(auth({ token: data.token, user: user.data }));
         }
       }
     } catch (error) {
@@ -45,7 +45,7 @@ export const Register = () => {
     return <Redirect to="/todos" />;
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="container">
       <h2 className="display-1">Register</h2>
       {err && (
         <div className="alert alert-dismissible alert-danger">

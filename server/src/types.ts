@@ -6,6 +6,7 @@ export interface IUser extends Document {
   id?: string;
   email: string;
   password: string;
+  todos: ITodo[] | any;
 }
 
 export interface ITodo extends Document {

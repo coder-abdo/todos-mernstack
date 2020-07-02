@@ -1,3 +1,6 @@
+a {
+  text-decoration: none !important;
+}
 .flexy {
   display: flex;
   align-items: center;
@@ -13,6 +16,14 @@
 .menu-btn:hover {
   cursor: pointer;
 }
+@media (min-width: 768px) {
+  .mr-lg-2 {
+    margin-right: 2rem;
+  }
+  .fz-lg {
+    font-size: 22px;
+  }
+}
 @media (max-width: 768px) {
   .flexy {
     flex-direction: column !important;
@@ -20,8 +31,15 @@
   .menu-btn {
     display: block;
   }
+  .fz-sm {
+    font-size: 18px;
+  }
+
   .myc-sm-3 {
     margin: 2rem 0;
+  }
+  .mr-sm-2 {
+    margin-bottom: 2rem;
   }
   .drop-down {
     position: absolute;
@@ -40,4 +58,18 @@
     visibility: visible;
     transform: scaleY(1);
   }
+}
+.btns-group {
+  display: flex;
+  justify-content: flex-end;
+}
+.delete-btn,
+.update-btn {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  color: var(--red);
+  font-size: 30px;
+  display: flex;
+  justify-content: flex-end;
 }

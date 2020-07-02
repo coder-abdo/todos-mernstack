@@ -14,34 +14,39 @@ export const Login = () => {
     password: "",
   });
   const { email, password } = user;
-  console.log(isAuth);
+  // console.log(isAuth);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("/login", user);
-      dispatch(successLogin(data.token));
-      if (data.token) {
-        const user = await axios.get("/auth", {
+      const {
+        data: { token },
+      } = await axios.post("/login", user);
+      dispatch(successLogin(token));
+      if (token) {
+        const { data } = await axios.get("/auth", {
           headers: {
-            "x-auth-token": data.token,
+            "x-auth-token": token,
           },
         });
-        dispatch(auth({ token: data.token, user: user.data }));
+        return dispatch(auth({ token, user: data }));
       }
     } catch (err) {
-      let Err = err.response.data.err;
-      dispatch(faildLogin());
-      setError(Err);
+      if (err) {
+        let Err = err.response.data.err;
+        dispatch(faildLogin());
+        setError(Err);
+      }
+      console.error(err);
     }
   };
   if (isAuth) {
     return <Redirect to="/todos" />;
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="container">
       <h2 className="display-1">Welcome Back</h2>
       {error && (
         <Alert
@@ -77,7 +82,7 @@ export const Login = () => {
       <button type="submit" className="btn btn-primary btn-lg mr-2">
         Login
       </button>
-      <Link to="/login" className="big">
+      <Link to="/signup" className="big">
         have not an account yet?
       </Link>
     </form>

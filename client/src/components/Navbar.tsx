@@ -29,12 +29,10 @@ export const Navbar = () => {
   );
   const authUser = (
     <>
-      <li className="nav-item">
+      <li className="nav-item mr-lg-2 mb-sm-2 fz-lg fz-sm">
         <NavLink to="/todos">Todos</NavLink>
       </li>
-      <li className="nav-item mx-md-3 myc-sm-3">
-        <NavLink to="/todos/create">Create</NavLink>
-      </li>
+
       <li className="nav-item">
         <button
           className="btn btn-secondary my-2 my-sm-0"
